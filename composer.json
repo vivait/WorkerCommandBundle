@@ -1,7 +1,7 @@
 {  
     "name":"vivait/worker-command-bundle",
     "description":"Integrates Pheanstalk and endless commands to allow easy creation of custom workers.",
-    "licence":"MIT",
+    "license":"MIT",
     "authors":[
       { 
          "name":"Robin Cawser",
