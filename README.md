@@ -8,14 +8,16 @@ Integrates [Pheanstalk](https://github.com/pda/pheanstalk) and [endless commands
 Add "vivait/worker-command-bundle": "dev-master" to your composer.json and run composer update
     
 Update your AppKernel:
-    
-    public function registerBundles()
-    {
-        $bundles = array(
-            ...
-            new Vivait\WorkerCommandBundle\VivaitWorkerCommandBundle(),
-            new Leezy\PheanstalkBundle\LeezyPheanstalkBundle(),
-    }
+
+```php
+public function registerBundles()
+{
+    $bundles = array(
+        ...
+        new Vivait\WorkerCommandBundle\VivaitWorkerCommandBundle(),
+        new Leezy\PheanstalkBundle\LeezyPheanstalkBundle(),
+}
+```
     
 Configure [LeezyPheanstalkBundle](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/2-configuration.md).
     
