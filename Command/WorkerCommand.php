@@ -5,6 +5,7 @@ namespace Vivait\WorkerCommandBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Wrep\Daemonizable\Command\EndlessCommand;
 use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
@@ -12,11 +13,14 @@ use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 abstract class WorkerCommand extends EndlessContainerAwareCommand
 {
 
+    public function __construct(){
+        parent::__construct();
+    }
     protected function configure()
     {
         $this->setName($this->setCommandNamespace())
-            ->addArgument('timeout', InputArgument::OPTIONAL, 'How often to perform command', 5)
-            ->addArgument('ignore', InputArgument::OPTIONAL);
+            ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, 5)
+            ->addOption('ignore', 'i', InputOption::VALUE_OPTIONAL);
 
         //TODO allow extra arguments
         /**
@@ -40,10 +44,10 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
 
 
         $tube = $this->setTube();
-        $ignore = $input->getArgument('ignore');
+        $ignore = $input->getOption('ignore');
 
         //Set timeout
-        $this->setTimeout($input->getArgument('timeout'));
+        $this->setTimeout($input->getOption('timeout'));
 
         $output->writeln(sprintf("Worker: watching tube \"%s\"", $tube));
 
@@ -74,7 +78,7 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      *
      * @return array|null
      */
-    abstract protected function setArguments();
+    //abstract protected function setArguments();
 
     /**
      * @param $payload
