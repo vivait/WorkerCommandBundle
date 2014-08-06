@@ -1,0 +1,20 @@
+{  
+    "name":"vivait/worker-command-bundle",
+    "description":"Integrates Pheanstalk and endless commands to allow easy creation of custom workers.",
+    "authors":[
+      { 
+         "name":"Robin Cawser",
+         "email":"robin@vivait.co.uk"
+      }
+    ],
+    "require":{},
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload":{
+      "psr-0":{
+         "Vivait\\WorkerCommandBundle":""
+      }
+    },
+    "target-dir":"Vivait/WorkerCommandBundle"
+}
