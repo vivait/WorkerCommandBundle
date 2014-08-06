@@ -57,6 +57,10 @@ class EmailWorkerCommand extends WorkerCommand
 The `performAction()` method will be called whenever a new job is available. This method should be used to perform the
 worker's task.
 
+Set the name of the command using `setCommandNamespace()`, and the tube to watch using `setTube()`.
+
+`onFirstRun()` can be used to perform a task when the command is first run, such as logging, or writing to the console.
+
 ### Running the command
 
 As long as this class resides in your application's `Command` directory, Symfony should autodetect it. Run `php app/console`
@@ -64,7 +68,7 @@ to see a list of available commands.
 
 To run the command defined in the above class, run `php app/console vivait:queue:worker:email` in your terminal. 
 
-### Options
+#### Options
 
 By default, the worker will accept two optional arguments. 
 

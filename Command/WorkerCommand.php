@@ -72,7 +72,7 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return mixed
+     * @return void
      */
     abstract protected function onFirstRun(InputInterface $input, OutputInterface $output);
 
