@@ -1,0 +1,3 @@
+vivait_queue_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: VivaitWorkerCommandBundle:Default:index }
