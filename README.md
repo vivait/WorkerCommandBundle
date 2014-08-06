@@ -44,12 +44,18 @@ class EmailWorkerCommand extends WorkerCommand
     {
         return 'vivait.email';
     }
+    
+    protected function onFirstRun(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln("Watching the email tube")
+    }
 }
 ```
     
 ### Do some work
 
-To make the worker do something, add your 
+The `performAction()` method will be called whenever a new job is available. This method should be used to perform the
+worker's task.
 
 ### Running the command
 
