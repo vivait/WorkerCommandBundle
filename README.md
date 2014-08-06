@@ -24,24 +24,26 @@ Configure [LeezyPheanstalkBundle](https://github.com/armetiz/LeezyPheanstalkBund
 
 Simply extend `Vivait\WorkerCommandBundle\Command\WorkerCommand` and implement its abstract methods.
 
-    class EmailWorkerCommand extends WorkerCommand
-    {
-    
-        protected function performAction($payload, InputInterface $input, OutputInterface $output)
-        {
-            $output->writeln($payload);
-        }
-    
-        protected function setCommandNamespace()
-        {
-            return "vivait:queue:worker:email";
-        }
+```php
+class EmailWorkerCommand extends WorkerCommand
+{
 
-        protected function setTube()
-        {
-            return 'vivait.email';
-        }
+    protected function performAction($payload, InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln($payload);
     }
+
+    protected function setCommandNamespace()
+    {
+        return "vivait:queue:worker:email";
+    }
+
+    protected function setTube()
+    {
+        return 'vivait.email';
+    }
+}
+```
     
 ### Do some work
 

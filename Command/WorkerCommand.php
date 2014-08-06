@@ -12,10 +12,6 @@ use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 
 abstract class WorkerCommand extends EndlessContainerAwareCommand
 {
-
-    public function __construct(){
-        parent::__construct();
-    }
     protected function configure()
     {
         $this->setName($this->setCommandNamespace())
