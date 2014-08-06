@@ -15,7 +15,7 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
     protected function configure()
     {
         $this->setName($this->setCommandNamespace())
-            ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, 5)
+            ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, self::DEFAULT_TIMEOUT)
             ->addOption('ignore', 'i', InputOption::VALUE_OPTIONAL);
 
         //TODO allow extra arguments
