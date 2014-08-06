@@ -3,6 +3,7 @@
 namespace Vivait\WorkerCommandBundle\Command;
 
 
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,6 +13,8 @@ use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 
 abstract class WorkerCommand extends EndlessContainerAwareCommand
 {
+    private $first_run = true;
+
     protected function configure()
     {
         $this->setName($this->setCommandNamespace())
@@ -19,12 +22,12 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
             ->addOption('ignore', 'i', InputOption::VALUE_OPTIONAL);
 
         //TODO allow extra arguments
-        /**
-        if(is_array($this->setArguments())){
-            foreach($this->setArguments() as $argument){
-                $this->addArgument($argument['name'], $argument['mode'], $argument['description']);
-            }
-        }**/
+
+//        if(is_array($this->setArguments())){
+//            foreach($this->setArguments() as $argument){
+//                $this->addArgument($argument['name'], $argument['mode'], $argument['description']);
+//            }
+//        }
 
     }
 
@@ -36,16 +39,18 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->throwExceptionOnShutdown();
+        if($this->first_run){
+            $this->onFirstRun($input, $output);
+            $this->first_run = false;
+        }
 
+        $this->throwExceptionOnShutdown();
 
         $tube = $this->setTube();
         $ignore = $input->getOption('ignore');
 
         //Set timeout
         $this->setTimeout($input->getOption('timeout'));
-
-        $output->writeln(sprintf("Worker: watching tube \"%s\"", $tube));
 
         $container = $this->getContainer();
         //TODO abstract out for different queues.
@@ -63,7 +68,17 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
     }
 
     /**
+     * Perform actions on the first iteration, such as printing to console or logging
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return mixed
+     */
+    abstract protected function onFirstRun(InputInterface $input, OutputInterface $output);
+
+    /**
      * Set the namespace of the command, e.g. vivait:queue:worker:email
+     *
      * @return string
      */
     abstract protected function setCommandNamespace();
