@@ -44,11 +44,6 @@ class EmailWorkerCommand extends WorkerCommand
     {
         return 'vivait.email';
     }
-    
-    protected function onFirstRun(InputInterface $input, OutputInterface $output)
-    {
-        $output->writeln("Watching the email tube")
-    }
 }
 ```
     
@@ -58,8 +53,6 @@ The `performAction()` method will be called whenever a new job is available. Thi
 worker's task.
 
 Set the name of the command using `setCommandNamespace()`, and the tube to watch using `setTube()`.
-
-`onFirstRun()` can be used to perform a task when the command is first run, such as logging, or writing to the console.
 
 ### Running the command
 

@@ -4,6 +4,7 @@ namespace Vivait\WorkerCommandBundle\Command;
 
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,7 +19,7 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
     protected function configure()
     {
         $this->setName($this->setCommandNamespace())
-            ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, self::DEFAULT_TIMEOUT)
+            ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, '', self::DEFAULT_TIMEOUT)
             ->addOption('ignore', 'i', InputOption::VALUE_OPTIONAL);
 
         //TODO allow extra arguments
@@ -39,11 +40,6 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if($this->first_run){
-            $this->onFirstRun($input, $output);
-            $this->first_run = false;
-        }
-
         $this->throwExceptionOnShutdown();
 
         $tube = $this->setTube();
@@ -67,14 +63,14 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
         $pheanstalk->delete($job);
     }
 
+
     /**
-     * Perform actions on the first iteration, such as printing to console or logging
-     *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      */
-    abstract protected function onFirstRun(InputInterface $input, OutputInterface $output);
+    protected function initialize(InputInterface $input, OutputInterface $output){
+        $output->writeln(sprintf("<info>Worker %s:</info> <comment>watching tube \"%s\"</comment>", $this->setCommandNamespace(), $this->setTube()));
+    }
 
     /**
      * Set the namespace of the command, e.g. vivait:queue:worker:email
