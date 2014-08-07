@@ -39,11 +39,6 @@ class EmailWorkerCommand extends WorkerCommand
     {
         return "vivait:queue:worker:email";
     }
-
-    protected function setTube()
-    {
-        return 'vivait.email';
-    }
 }
 ```
     
@@ -52,22 +47,21 @@ class EmailWorkerCommand extends WorkerCommand
 The `performAction()` method will be called whenever a new job is available. This method should be used to perform the
 worker's task.
 
-Set the name of the command using `setCommandNamespace()`, and the tube to watch using `setTube()`.
+Set the name of the command using `setCommandNamespace()`.
 
 ### Running the command
 
 As long as this class resides in your application's `Command` directory, Symfony should autodetect it. Run `php app/console`
 to see a list of available commands.
 
-To run the command defined in the above class, run `php app/console vivait:queue:worker:email` in your terminal. 
+To run the command defined in the above class, run `php app/console vivait:queue:worker:email` in your terminal.
+
+#### Arguments
+The command above must be provided with the `tube` argument, for example, `php app/console vivait:queue:worker:email "vivait.myapp.email"`
+
+Optionally, an `ignore` argument can be set to specify an ignored tube.
 
 #### Options
-
-By default, the worker will accept two optional arguments. 
-
-1. `--timeout` will set the interval between running the command, with a
-default setting of 5 seconds.
-
-2. `--ignore` will set the tube name to ignore
+`--timeout` will set the interval between running the command, with a default setting of 5 seconds.
 
 E.g. `php app/console vivait:queue:worker:email -t 0.5`
