@@ -15,12 +15,11 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
 
     protected function configure()
     {
+        $this->setArguments();
         $this->setName($this->setCommandNamespace())
             ->addArgument('tube', InputArgument::REQUIRED)
             ->addArgument('ignore', InputArgument::OPTIONAL)
             ->addOption('timeout', 't', InputOption::VALUE_OPTIONAL, '', self::DEFAULT_TIMEOUT);
-
-        //TODO allow extra arguments
     }
 
     /**
