@@ -30,8 +30,6 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->throwExceptionOnShutdown();
-
         //Get arguments and options
         $tube = $input->getArgument('tube');
         $ignore = $input->getArgument('ignore');
@@ -50,10 +48,25 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
             ->reserve();
 
         //Do work
-        $this->performAction($job->getData(), $input, $output);
+        try {
+            $output->writeln(
+                sprintf("[%s] <info>Performing job</info>", $this->getName())
+            );
 
-        //Remove job
-        $pheanstalk->delete($job);
+            $this->performAction($job->getData(), $input, $output);
+            $pheanstalk->delete($job);
+            $output->writeln(
+                sprintf("[%s] <info>Job finished successfully and removed</info>", $this->getName())
+            );
+
+        } catch (\Exception $e) {
+            $pheanstalk->bury($job);
+            $output->writeln(
+                sprintf("[%s] <error>Job buried: %s (%d)</error>", $this->getName(), $e->getMessage(), $e->getCode())
+            );
+
+            $this->handleException($e, $input, $output);
+        }
     }
 
 
@@ -65,8 +78,8 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
     {
         $output->writeln(
             sprintf(
-                "<info>Worker %s:</info> <comment>watching tube \"%s\"</comment>",
-                $this->setCommandNamespace(),
+                "[%s] <comment>watching tube: %s</comment>",
+                $this->getName(),
                 $input->getArgument('tube')
             )
         );
@@ -94,4 +107,12 @@ abstract class WorkerCommand extends EndlessContainerAwareCommand
      * @return mixed
      */
     abstract protected function performAction($payload, InputInterface $input, OutputInterface $output);
+
+    /**
+     * @param \Exception $e
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return mixed
+     */
+    abstract protected function handleException(\Exception $e, InputInterface $input, OutputInterface $output);
 } 
