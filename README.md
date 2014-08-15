@@ -65,3 +65,7 @@ Optionally, an `ignore` argument can be set to specify an ignored tube.
 `--timeout` will set the interval between running the command, with a default setting of 5 seconds.
 
 E.g. `php app/console vivait:queue:worker:email -t 0.5`
+
+### Exception handling
+WorkerCommand catches any `\Exception`. Internally, WorkerCommand prints the error message and code to the console, but
+by implementing `handleException()`, it's possible to further interact with the exception.
