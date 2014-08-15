@@ -1,0 +1,13 @@
+language: php
+php:
+  - 5.5
+  - 5.4
+  - hhvm
+
+before_script:
+  - composer selfupdate
+  - composer install --prefer-source
+
+#script:
+#  - bin/phpspec run
+#  - ./vendor/bin/behat --format=pretty
