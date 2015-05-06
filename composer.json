@@ -9,8 +9,8 @@
       }
     ],
     "require":{
-        "leezy/pheanstalk-bundle": "2.*",
-        "wrep/daemonizable-command": "1.2.*"
+        "leezy/pheanstalk-bundle": "~2.5",
+        "wrep/daemonizable-command": "~1.2"
     },
     "config": {
         "bin-dir": "bin"
